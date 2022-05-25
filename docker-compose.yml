@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  mysql:
+    build:
+      context: ./mysql
+    container_name: mysql_localhost
+    ports:
+      - ${MYSQL_PORT}:3306
+    environment:
+      - TZ="Asia/Jakarta"
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - ./storage/mysql:/var/lib/mysql:rw
+
+  mongodb:
+    build:
+      context: ./mongodb
+    container_name: mongo_localhost
+    ports:
+      - ${MONGODB_PORT}:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+    volumes:
+      - ./storage/mongodb:/data/db
