@@ -1,1 +1,1 @@
-FROM mongodb:5.0
+FROM mongo:5.0
