@@ -32,7 +32,19 @@ services:
   elasticsearch:
     build:
       context: ./elasticsearch
-    restart: on-failure:5
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 5
+        window: 120s
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 1G
+        reservations:
+          cpus: '0.25'
+          memory: 500M
     container_name: elasticsearch_localhost
     ports:
       - ${ELASTICSEARCH_PORT_1}:9200
@@ -40,6 +52,8 @@ services:
     environment:
       - xpack.security.enabled=false
       - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
     volumes:
       - ./storage/elasticsearch:/var/lib/elasticsearch/data
     ulimits:
