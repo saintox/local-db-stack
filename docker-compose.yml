@@ -26,3 +26,14 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
     volumes:
       - ./storage/mongodb:/data/db
+
+  elasticsearch:
+    build:
+      context: ./elasticsearch
+    container_name: elasticsearch_localhost
+    ports:
+      - ${ELASTICSEARCH_PORT}:9200
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - ./storage/elasticsearch:/usr/share/elasticsearch/data
