@@ -32,8 +32,19 @@ services:
       context: ./elasticsearch
     container_name: elasticsearch_localhost
     ports:
-      - ${ELASTICSEARCH_PORT}:9200
+      - ${ELASTICSEARCH_PORT_1}:9200
+      - ${ELASTICSEARCH_PORT_2}:9300
     environment:
+      - xpack.security.enabled=false
       - discovery.type=single-node
     volumes:
-      - ./storage/elasticsearch:/usr/share/elasticsearch/data
+      - ./storage/elasticsearch:/var/lib/elasticsearch/data
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
